@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Firebase;
 using Firebase.Auth;
@@ -16,12 +17,11 @@ public class Database : MonoBehaviour
 	private float posX, posZ;
 
 	// player game data & profile
-	private int score;
 	private string email;
-	private long myScore;
 	
 	// for storing all player who is online
 	private Dictionary<string, object> players = new Dictionary<string, object>();
+	private Dictionary<string, GameObject> playersGameObject = new Dictionary<string, GameObject>(); 
 
 	// for check dependencies is available for database 
 	private DependencyStatus dependencyStatus = DependencyStatus.UnavailableOther;
@@ -76,7 +76,9 @@ public class Database : MonoBehaviour
 			app.SetEditorDatabaseUrl(app.Options.DatabaseUrl);
 		}
 
+		// initialize player's record
 		_InitializePlayerRecord();
+		
 		// value change listener
 		_PlayerPositionListener();
 	}
@@ -160,19 +162,67 @@ public class Database : MonoBehaviour
 			{
 				foreach (var child in e1.Snapshot.Children)
 				{
-					// if contains player, remove it and add updated data
-					if (players.ContainsKey(child.Child("email").Value.ToString())) 
-						players.Remove(child.Child("email").Value.ToString());
-					players.Add(child.Child("email").Value.ToString(), child.Value as Dictionary<string, object>);
+					String childEmailKey = child.Child("email").Value.ToString();
+					// if player is online, add to list players
+					if ((bool) child.Child("online").Value)
+					{
+						// if contains player, remove it and add updated list:players
+						if (players.ContainsKey(childEmailKey))
+						{
+							players.Remove(childEmailKey);
+						}
+						players.Add(childEmailKey, child.Value as Dictionary<string, object>);
+
+						// create other player game object and add to list playersGameObject
+						if (child.Child("email").Value.ToString().Equals(email)) continue;
+						
+						// get updated other player position
+//						var posX = child.Child("posX").Value.ToString();
+//						var posZ = child.Child("posZ").Value.ToString();
+//						long x = long.Parse(posX);
+//						long z = long.Parse(posZ);
+//						
+//						
+//						Debug.Log( "" + x);
+//						Debug.Log( "" + z);
+						float x = float.Parse(child.Child("posX").Value.ToString());
+						float z = float.Parse(child.Child("posZ").Value.ToString());
+						Debug.Log(child.Child("posX").Value.ToString());
+						Debug.Log("PosX:" + x + ", PosZ:" + z);
+						
+						/*if (playersGameObject.ContainsKey(childEmailKey))
+						{
+							Vector3 newPosition = new Vector3((float)x, 0, (float)z);
+							playersGameObject[childEmailKey].transform.position = newPosition;
+						}
+						else
+						{
+							// instantiate other player if player is not exist in playersGameObject
+							var player = Resources.Load<GameObject>("Sphere");
+							Instantiate(player, new Vector3(x, 0, z), Quaternion.identity);
+							playersGameObject.Add(childEmailKey, player);
+						}*/
+					}
+					else
+					{
+						// if players contains player is offline, remove it with game object
+						if (players.ContainsKey(childEmailKey))
+						{
+							players.Remove(childEmailKey);							
+						}
+						if (playersGameObject.ContainsKey(childEmailKey))
+						{
+							playersGameObject.Remove(childEmailKey);
+							Destroy(playersGameObject[childEmailKey], 0f);
+						}
+					}
 					//if (!(bool) child.Child("online").Value || child.Child("email").Value.Equals(email)) continue;
-					DebugLog(child.Child("email").Value.ToString() + ", Position: X=" +
+					/*DebugLog(child.Child("email").Value.ToString() + ", Position: X=" +
 					          child.Child("posX").Value.ToString() + ", z=" +
-					          child.Child("posZ").Value.ToString());
+					          child.Child("posZ").Value.ToString());*/
 				}
 				//Debug.Log("Players.Count: " + players.Count);
 //				Dictionary<string, object> myPlayerDictionary = (Dictionary<string, object>) players[email];
-				myScore = (long) ((Dictionary<string, object>) players[email])["score"];
-				//Debug.Log("myScore" + myScore);
 				
 				/*foreach (var player in players)
 				{
@@ -182,10 +232,11 @@ public class Database : MonoBehaviour
 					          ", posZ: " + ((Dictionary<string, object>) player.Value)["posZ"] + 
 					          ", score: " + ((Dictionary<string, object>) player.Value)["score"]);
 				}*/
-				//players.Clear();
 			}
 		};
 	}
+	
+	
 	
 	// add player score
 	public void _AddScore()
@@ -196,8 +247,7 @@ public class Database : MonoBehaviour
 			return;
 		}
 
-		DebugLog(String.Format("Attempting to add score {0} {1}",
-			email, score.ToString()));
+		DebugLog("Attempting to add score...");
 
 		DatabaseReference reference = FirebaseDatabase.DefaultInstance.GetReference("Users");
 

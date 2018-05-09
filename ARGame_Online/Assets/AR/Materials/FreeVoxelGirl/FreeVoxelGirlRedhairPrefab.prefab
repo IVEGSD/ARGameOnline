@@ -688,7 +688,7 @@ Animator:
   m_GameObject: {fileID: 1000011845235402}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 0000b64025342bb4196a523bf869743e, type: 3}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a9120249e41ff444ebc13228d0c2bd84, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -696,6 +696,7 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!137 &137000010793667796
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
@@ -709,6 +710,7 @@ SkinnedMeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: c5906a6033a74f44d8e13f8ddfc744f8, type: 2}
   m_StaticBatchInfo:
