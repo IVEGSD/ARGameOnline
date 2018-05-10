@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QCARConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="qcar_config.xsd">
+  <Tracking>
+    <ImageTarget name="MoneyMarker" size="5.000000 2.451253" />
+    <ImageTarget name="ARMarker" size="5.000000 2.817073" />
+  </Tracking>
+</QCARConfig>

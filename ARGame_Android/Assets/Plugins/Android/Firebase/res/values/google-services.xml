@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources tools:keep="@string/firebase_database_url,@string/gcm_defaultSenderId,@string/google_storage_bucket,@string/project_id,@string/google_api_key,@string/google_crash_reporting_api_key,@string/google_app_id,@string/default_web_client_id" xmlns:tools="http://schemas.android.com/tools">
+  <string name="firebase_database_url" translatable="false">https://argamedemo.firebaseio.com</string>
+  <string name="gcm_defaultSenderId" translatable="false">27349049626</string>
+  <string name="google_storage_bucket" translatable="false">argamedemo.appspot.com</string>
+  <string name="project_id" translatable="false">argamedemo</string>
+  <string name="google_api_key" translatable="false">AIzaSyA5UH0cMJ1_VgPB3rMfFPz_meTdcucVDkE</string>
+  <string name="google_crash_reporting_api_key" translatable="false">AIzaSyA5UH0cMJ1_VgPB3rMfFPz_meTdcucVDkE</string>
+  <string name="google_app_id" translatable="false">1:27349049626:android:05f96062e15d11ee</string>
+  <string name="default_web_client_id" translatable="false">27349049626-05q3es6idmths9vp2ihki2o7ud2mcuv7.apps.googleusercontent.com</string>
+</resources>
