@@ -41,3 +41,7 @@ sysinfo.txt
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+#PersonalDataFiles
+GoogleService-Info.plist
+google-services.json
